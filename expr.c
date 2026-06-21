@@ -10,6 +10,19 @@ extern int line;
 extern struct token Token;
 extern int scan(struct token *t);
 
+static int OpPrec[] = {10,10,20,20,0,0};
+
+static int op_prec(int tokentype)
+{
+ int prec = OpPrec[tokentype];
+ if(prec==0)
+ {
+  fprintf(stderr,"syntax err token %d on line %d",tokentype,line);
+  exit(1);
+ }
+ return (prec);
+}
+
 static int arithop(int tok)
 {
  switch (tok)
@@ -39,21 +52,26 @@ static struct ASTnode *primary(void)
  }
 }
 
-struct ASTnode *binexpr(void)
+struct ASTnode *binexpr(int ptp)
 {
  struct ASTnode *left, *right;
- int nodetype;
+ int tokentype;
 
  left = primary();
 
- if(Token.token == TOK_EOF)
+ tokentype = Token.token;
+
+ if(tokentype == TOK_EOF)
   return left;
 
- nodetype = arithop(Token.token);
-
- scan(&Token);
-
- right = binexpr();
-
- return mkastnode(nodetype, left, right, 0);
+ while(op_prec(tokentype)>ptp)
+ {
+  scan(&Token);
+  right=binexpr(OpPrec[tokentype]);
+  left=mkastnode(arithop(tokentype),left,right,0);
+  tokentype=Token.token;
+  if(tokentype==TOK_EOF)
+   return left;
+ }
+ return left;
 }
