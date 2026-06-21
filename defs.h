@@ -18,4 +18,7 @@ struct ASTnode
  int intvalue;
 };
 
+void freeall_registers(void);
+void cgpreamble(void);void cgpostamble(void);int cgload(int vakue);int cgadd(int r1,int r2);int cgsub(int r1,int r2);int cgmult(int r1,int r2);int cgdiv(int r1,int r2);
+
 #endif

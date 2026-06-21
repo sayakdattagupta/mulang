@@ -6,7 +6,7 @@ int line; int putback_buf; FILE *infile; struct token Token;
 
 extern int scan(struct token *t);
 extern struct ASTnode *binexpr(int ptp);
-extern int interpretAST(struct ASTnode *n);
+extern void genCode(struct ASTnode *n);
 
 static void init()
 {
@@ -31,7 +31,8 @@ int main(int argc, char *argv[])
  }
  scan(&Token);
  result_tree = binexpr(0);
- printf("Evaluated result: %d\n", interpretAST(result_tree));
+ if(result_tree!=NULL)
+  genCode(result_tree);
  fclose(infile);
  return 0;
 }
