@@ -39,6 +39,8 @@ static int skip(void)
  c=next();
  while(' ' == c || '\n' == c || '\r' == c || '\f' == c || '\t' == c)
  {
+  if('\n'==c)
+   line++;
   c = next();
  }
  return c;
@@ -51,6 +53,7 @@ int scan(struct token *t)
  switch (c)
  {
   case EOF:
+   t->token=TOK_EOF;
    return 0;
   case '+':
    t->token=TOK_PLUS;

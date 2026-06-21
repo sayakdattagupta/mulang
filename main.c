@@ -2,31 +2,21 @@
 #include <stdlib.h>
 #include "defs.h"
 
-int line; int putback_buf; FILE *infile;
+int line; int putback_buf; FILE *infile; struct token Token;
 
 extern int scan(struct token *t);
-char *tokstr[] = {"TOK_PLUS","TOK_MINUS","TOK_ASTERISK","TOK_SLASH","TOK_INTLIT"};
+extern struct ASTnode *binexpr(void);
+extern int interpretAST(struct ASTnode *n);
+
 static void init()
 {
  line=1;
  putback_buf=0;
 }
-static void scanfile()
-{
- struct token T;
- while(scan(&T))
- {
-  printf("Token %s",tokstr[T.token]);
-  if(T.token==TOK_INTLIT)
-  {
-   printf(", value %d",T.intvalue);
-  }
-  printf("\n");
- }
-}
 
 int main(int argc, char *argv[])
 {
+ struct ASTnode *result_tree;
  if(argc!=2)
  {
   fprintf(stderr,"Usage: %s <input_file>\n",argv[0]);
@@ -39,7 +29,9 @@ int main(int argc, char *argv[])
   fprintf(stderr,"Unable to open file: %s\n",argv[1]);
   exit(1);
  }
- scanfile();
+ scan(&Token);
+ result_tree = binexpr();
+ printf("Evaluated result: %d\n", interpretAST(result_tree));
  fclose(infile);
  return 0;
 }

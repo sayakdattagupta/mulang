@@ -1,8 +1,9 @@
 #ifndef DATA_H
 #define DATA_H
 
-extern_ int line;
-extern_ int putback_buf;
-extern_ FILE *infile;
+extern int line;
+extern int putback_buf;
+extern FILE *infile;
+extern struct token Token;
 
 #endif
