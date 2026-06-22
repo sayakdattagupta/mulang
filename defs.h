@@ -1,7 +1,8 @@
 #ifndef DEFS_H
 #define DEFS_H
+#define TEXTLEN 512
 
-enum { TOK_PLUS, TOK_MINUS, TOK_SLASH, TOK_ASTERISK, TOK_INTLIT, TOK_EOF };
+enum { TOK_PLUS, TOK_MINUS, TOK_SLASH, TOK_ASTERISK, TOK_INTLIT, TOK_EOF, TOK_PRINT, TOK_SEMI };
 
 struct token {
  int token;
@@ -19,6 +20,8 @@ struct ASTnode
 };
 
 void freeall_registers(void);
-void cgpreamble(void);void cgpostamble(void);int cgload(int vakue);int cgadd(int r1,int r2);int cgsub(int r1,int r2);int cgmult(int r1,int r2);int cgdiv(int r1,int r2);
+void cgpreamble(void);void cgpostamble(void);int cgload(int value);int cgadd(int r1,int r2);int cgsub(int r1,int r2);int cgmult(int r1,int r2);int cgdiv(int r1,int r2);void cgprintint(int r1);
+
+void statements(void);
 
 #endif

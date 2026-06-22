@@ -10,10 +10,14 @@ extern int line;
 extern struct token Token;
 extern int scan(struct token *t);
 
-static int OpPrec[] = {10,10,20,20,0,0};
+static int OpPrec[] = {10,10,20,20};
 
 static int op_prec(int tokentype)
 {
+ if(tokentype>TOK_ASTERISK)
+ {
+  return 0;
+ }
  int prec = OpPrec[tokentype];
  if(prec==0)
  {
@@ -61,16 +65,17 @@ struct ASTnode *binexpr(int ptp)
 
  tokentype = Token.token;
 
- if(tokentype == TOK_EOF)
+ if(tokentype == TOK_SEMI)
   return left;
 
  while(op_prec(tokentype)>ptp)
  {
+  int current_op = tokentype;
   scan(&Token);
-  right=binexpr(OpPrec[tokentype]);
-  left=mkastnode(arithop(tokentype),left,right,0);
+  right=binexpr(op_prec(current_op));
+  left=mkastnode(arithop(current_op),left,right,0);
   tokentype=Token.token;
-  if(tokentype==TOK_EOF)
+  if(tokentype==TOK_SEMI)
    return left;
  }
  return left;

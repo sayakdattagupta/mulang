@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "defs.h"
+#define extern_
+#include "data.h"
+#undef extern_
 
 int line; int putback_buf; FILE *infile; struct token Token;
 
 extern int scan(struct token *t);
-extern struct ASTnode *binexpr(int ptp);
-extern void genCode(struct ASTnode *n);
+extern void statements(void);
+extern void cgpreamble(void);
+extern void cgpostamble(void);
 
 static void init()
 {
@@ -30,9 +34,9 @@ int main(int argc, char *argv[])
   exit(1);
  }
  scan(&Token);
- result_tree = binexpr(0);
- if(result_tree!=NULL)
-  genCode(result_tree);
+ cgpreamble();
+ statements();
+ cgpostamble();
  fclose(infile);
  return 0;
 }

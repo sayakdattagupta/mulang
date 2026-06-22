@@ -37,6 +37,7 @@ static void free_register(int reg)
 
 void cgpreamble() {
   freeall_registers();
+  fputs("\t.section\t.note.GNU-stack,\"\",@progbits\n", stdout);
   fputs(
     "\t.text\n"
     ".globl\tmain\n"
@@ -44,14 +45,11 @@ void cgpreamble() {
     "main:\n"
     "\tpushq\t%rbp\n"
     "\tmovq\t%rsp, %rbp\n", stdout);
-
-  fputs("\t.section\t.note.GNU-stack,\"\0\",@progbits\n", stdout);
 }
 
 void cgpostamble() {
   fputs(
-    "\tmovq\t%r8, %rax\n"
-    "\tmovq\t%rbp, %rsp\n"
+    "\tmovl\t$0, %eax\n"
     "\tpopq\t%rbp\n"
     "\tret\n", stdout);
 }
