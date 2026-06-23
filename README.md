@@ -6,6 +6,8 @@
 
 Lightweight, ahead-of-time compiled language written in pure C that currently targets x86_64 assembly code.
 
+Currently it can handle BODMAS precedence arithmetic.
+
 ---
 
 # Features
