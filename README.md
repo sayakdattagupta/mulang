@@ -42,6 +42,7 @@ Use `make clean` to clean up build artifacts.
 
 # TO-DO
 - Variables
+- Functions
 - Control flow structures (while, if-else, and for loops).
 - Achieving bootstrap/self-hosting.
 
